@@ -124,3 +124,38 @@ html, body, .wrapper {
   font-size: 13px;
   font-weight: 300;
 }
+
+@media only screen and (orientation: portrait){
+  #map{
+    display: block;    
+    height: 50%;
+    width: 100%;    
+  }
+
+  #infoPage{
+    display: block;    
+    height: 50%;
+    width: 100%; 
+  }
+}
+
+@media only screen and (max-width: 590px) {
+  .wrapper h1, .wrapper h3 {    
+    font-size: 1.4em;   
+    margin: 0;  
+  }
+  #icon{
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .wrapper h1, .wrapper h3 {    
+    font-size: 1.6em;   
+    margin: 0;  
+  }  
+  #icon{
+    display: none;
+  }
+
+}
