@@ -112,3 +112,127 @@ function success (position){
     infoWeather(markerPosition);
     map.setZoom(11);
   });
+
+  function infoWeather (position){
+
+  var getWeather= weatherURL(position),
+      getUV = uvURL(position);
+
+  var celsius = false,
+      unit = "&deg;F",
+      location,
+      temperature;
+
+  
+
+  function uvInterpreter (uv){
+      if (uv<3){
+          uvMeans = "Low";
+      } else if (uv<6){
+          uvMeans = "Moderater";
+      } else if (uv<6){
+          uvMeans = "High";
+      } else if (uv<6){
+          uvMeans = "Very High";
+      } else {
+          uvMeans = "Extreme";
+      }
+      return uvMeans;
+  }
+
+  $.getJSON(getWeather, function(json) { 
+      var info = {
+          city: json.name,
+          country: json.sys.country,
+          weather: json.weather[0].main,
+          temperature: json.main.temp,            
+          humidity: json.main.humidity,  
+          pressure: json.main.pressure,  
+          clouds: json.clouds.all,        
+          windSpeed: json.wind.speed,    
+          hour: json.weather[0].icon.slice(-1),     
+          icon: "http://openweathermap.org/img/w/"
+                + json.weather[0].icon  + ".png"                  
+      };        
+
+      $.getJSON(getUV, function(json) {             
+          uv = json.value;             
+
+          function infoBackground(weather){
+            switch (weather){
+              
+              case "Clouds":
+                if (info.hour=="n"){
+                  $("#infoPage").css("background-image","url(https://goo.gl/84ZcvV)");
+                } else {
+                  $("#infoPage").css("background-image","url(https://goo.gl/irGeCP)");
+                }                    
+                break;
+              case "Snow":
+                $("#infoPage").css("background-image","url(https://goo.gl/9zo3Y6)");
+                break;
+              case "Thunderstorm":
+                $("#infoPage").css("background-image","url(https://goo.gl/UEnJwO)");
+                break;
+              case "Drizzle":
+              case "Rain":
+                $("#infoPage").css("background-image","url(http://goo.gl/0MNP3Z)");
+                break;
+              case "Atmosphere":
+                $("#infoPage").css("background-image","url(http://goo.gl/O3PhoQ)");
+                break;
+              default:
+                case "Clear":
+                if (info.hour=="n"){
+                  $("#infoPage").css("background-image","url(http://goo.gl/EdPGY0)");
+                } else {
+                  $("#infoPage").css("background-image","url(http://goo.gl/qXza29)");
+                }                  
+                break;
+            }
+          }
+
+          infoBackground(info.weather);
+
+          location = "<a title='Come back to local position'>"+info.city + ", " +  info.country+"</a>",
+          temperature = "<a title='change temperature units'>"+Math.floor(info.temperature) + " " + unit+"</a>";
+          
+          $("#icon").attr("src", info.icon);
+          $("#location").html(location);
+          $("#temp").html(temperature);
+          $("#weather").html(info.weather);
+          $("#humidity h1").html(info.humidity);            
+          $("#pressure h1").html(info.pressure);
+          $("#windSpeed h1").html(info.windSpeed);
+          $("#uv h1").html(uvInterpreter(uv));
+
+          $("#temp").on({
+              'click': function (){
+                  if (celsius ==true){
+                      info.temperature = info.temperature*(9/5)+32;
+                      celsius=false;
+                      unit = "&deg;F"
+                  } else {                    
+                      info.temperature =(info.temperature-32)*(5/9);             
+                      celsius=true;
+                      unit = "&deg;C";
+                  }
+                  temperature = "<a title='change temperature units'>"+Math.floor(info.temperature) + " " + unit+"</a>";          
+                  $("#temp").html(temperature);
+          }
+        });
+         $("#location").on({
+              'click': function (){                  
+                infoWeather(localPosition);
+                map.setCenter({
+                  lat : localPosition.coords.latitude,
+                  lng : localPosition.coords.longitude
+                });
+                map.setZoom(14);
+          }
+        });
+      });
+    });
+  }
+  infoWeather(position);  
+}
