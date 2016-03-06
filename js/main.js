@@ -1,4 +1,7 @@
 function success (position){
+  $(".wrapper").css("display","block");
+  $(".wait-map").css("display","none");
+  $("body").css("display","block");
   localPosition= position;
   var openWeatherMapKey = "a60629539983348caea27e7bf224f54f";
   //set the openWeather json petition url
@@ -236,10 +239,9 @@ function success (position){
   }
 
   $(document).ready(function(){
-    if (navigator.geolocation){
-      
-      navigator.geolocation.getCurrentPosition(success);  
 
+    if (navigator.geolocation){      
+      navigator.geolocation.getCurrentPosition(success);  
     } else {
       $("#map").html("Geo Location is not supported in your browser");
     }    
