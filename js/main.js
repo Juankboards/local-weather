@@ -121,9 +121,7 @@ function success (position){
   var celsius = false,
       unit = "&deg;F",
       location,
-      temperature;
-
-  
+      temperature;  
 
   function uvInterpreter (uv){
       if (uv<3){
@@ -229,10 +227,20 @@ function success (position){
                   lng : localPosition.coords.longitude
                 });
                 map.setZoom(14);
-          }
+            }
+          });
         });
       });
-    });
+    }
+    infoWeather(position);  
   }
-  infoWeather(position);  
-}
+
+  $(document).ready(function(){
+    if (navigator.geolocation){
+      
+      navigator.geolocation.getCurrentPosition(success);  
+
+    } else {
+      $("#map").html("Geo Location is not supported in your browser");
+    }    
+});
