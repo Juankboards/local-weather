@@ -159,16 +159,6 @@ body {
   }
 }
 
-@media only screen and (max-width: 590px) {
-  .wrapper h1, .wrapper h3 {    
-    font-size: 1.4em;   
-    margin: 0;  
-  }
-  #icon{
-    display: none;
-  }
-}
-
 @media only screen and (max-width: 750px) {
   .wrapper h1, .wrapper h3 {    
     font-size: 1.6em;   
@@ -179,3 +169,14 @@ body {
   }
 
 }
+
+@media only screen and (max-width: 590px) {
+  .wrapper h1, .wrapper h3 {    
+    font-size: 1.3em;   
+    margin: 0;  
+  }
+  #icon{
+    display: none;
+  }
+}
+
